@@ -48,8 +48,8 @@ const Editor = (props) => {
         width: 120px;
     `;
     
-    const 
     const ListItem = styled.li`
+        position: relative;
         list-style-type: none;
         padding: 0.5rem;
         margin-bottom: 1rem; 
@@ -58,7 +58,12 @@ const Editor = (props) => {
             font-size: 1.5rem;
         } 
     `;
-
+    
+    const RemoveButton = styled(Button)`
+        position: absolute;
+        top: 0;
+        right: 0;
+    `;
     return (
         <Sidebar className="editor">
             <Navbar>
@@ -73,7 +78,7 @@ const Editor = (props) => {
                     <small>
                         Last modified: {note.lastModified.toLocaleString('en-GB')}
                     </small>
-                    <Button className="control-button" onClick={() => props.removeNote(note.id)}>Remove</Button>
+                    <RemoveButton className="control-button" onClick={() => props.removeNote(note.id)}>Remove</RemoveButton>
                 </ListItem>
                 )}
             </NoteList>
