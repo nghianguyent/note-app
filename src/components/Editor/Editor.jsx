@@ -1,69 +1,87 @@
-import React, { useEffect, useState } from 'react';
+import React, { } from 'react';
 import './Editor.css';
 import styled from "styled-components";
 
+// style components
+const Sidebar = styled.div`
+    background-color: #454545; 
+    color: white;
+    height: 90%;
+    width: 30%;
+    padding: 1rem 1.5rem;
+    margin-right: 1rem;
+    overflow-y: auto;
+`;
+const Navbar = styled.div`
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1rem;
+
+    ::before {
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background-color: black;
+        bottom: 0;
+        left: 0;
+    }
+`;
+const NoteList = styled.ul`
+
+`;
+const Title  = styled.h2`
+    font-family: "Open sans", sans-serif;
+    font-size: 2.3rem;
+    font-weight: 700;
+    color: white;
+`;    
+const Button = styled.button`
+    background-color: transparent;
+    border: none;
+    font-family: "Open sans", sans-serif;
+    font-weight: 700;
+    color: #59B3F7;
+    padding: 0.5rem 1rem;
+    width: 100px;
+    height: 40px;
+    cursor: pointer;
+    transition-duration: 0.2s;
+
+    &:hover {
+        transform: translate(-5px);
+    }
+`;
+
+const ListItem = styled.li`
+    position: relative;
+    list-style-type: none;
+    padding: 0.5rem;
+    margin-bottom: 1rem; 
+    border: 2px solid white;
+    cursor: pointer;
+
+    & * {
+        margin-bottom: 0.2rem;
+    }
+    h2 {
+        font-size: 1.5rem;
+    } 
+`;
+
+const RemoveButton = styled(Button)`
+    position: absolute;
+    color: #e62525;
+    top: 0;
+    right: 0;
+    z-index: 10;
+`;
 
 // component 
 const Editor = (props) => {
-    // style components
-    const Sidebar = styled.div`
-        background-color: rgba(255, 255, 255, 0.8); 
-        position: fixed;
-        height: 90%;
-        width: 30%;
-        padding: 1rem 1.5rem;
-        overflow-y: auto;
-    `;
-    const Navbar = styled.div`
-        position: relative;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-        margin-bottom: 1rem;
 
-        ::before {
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background-color: black;
-            bottom: 0;
-            left: 0;
-        }
-    `;
-    const NoteList = styled.ul`
-
-    `;
-    const Title  = styled.h2`
-        font-family: "Open sans", sans-serif;
-        font-size: 2.3rem;
-        font-weight: 700;
-        color: black;
-    `;    
-    const Button = styled.button`
-        background-color: transparent;
-        border: none;
-        font-family: "Open sans", sans-serif;
-        padding: 0.5rem 1rem;
-        width: 120px;
-    `;
-    
-    const ListItem = styled.li`
-        position: relative;
-        list-style-type: none;
-        padding: 0.5rem;
-        margin-bottom: 1rem; 
-
-        h2 {
-            font-size: 1.5rem;
-        } 
-    `;
-    
-    const RemoveButton = styled(Button)`
-        position: absolute;
-        top: 0;
-        right: 0;
-    `;
     return (
         <Sidebar className="editor">
             <Navbar>
@@ -72,7 +90,7 @@ const Editor = (props) => {
             </Navbar>
             <NoteList className="note-container">
                 {props.listNote.map((note) => 
-                <ListItem key={note.id.toString()}>
+                <ListItem key={note.id.toString()} onClick={() => props.setActiveNote(note.id)}>
                     <Title>{note.title}</Title>
                     <p>{note.content}</p>
                     <small>
