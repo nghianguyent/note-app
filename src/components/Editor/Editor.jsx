@@ -36,7 +36,12 @@ const Title  = styled.h2`
     font-family: "Open sans", sans-serif;
     font-size: 2.3rem;
     font-weight: 700;
+    width: 80%;
     color: white;
+    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;    
 const Button = styled.button`
     background-color: transparent;
@@ -62,13 +67,22 @@ const ListItem = styled.li`
     margin-bottom: 1rem; 
     border: 2px solid white;
     cursor: pointer;
+    width: 100%;
 
+    &.active {
+        background-color: #a19b9a;
+    }
     & * {
         margin-bottom: 0.2rem;
     }
     h2 {
         font-size: 1.5rem;
     } 
+    p {    
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 `;
 
 const RemoveButton = styled(Button)`
@@ -79,7 +93,7 @@ const RemoveButton = styled(Button)`
     z-index: 10;
 `;
 
-// component 
+// render components 
 const Editor = (props) => {
 
     return (
@@ -90,7 +104,7 @@ const Editor = (props) => {
             </Navbar>
             <NoteList className="note-container">
                 {props.listNote.map((note) => 
-                <ListItem key={note.id.toString()} onClick={() => props.setActiveNote(note.id)}>
+                <ListItem className={note.id === props.activeNote ? 'active' : ''}key={note.id.toString()} onClick={() => props.setActiveNote(note.id)}>
                     <Title>{note.title}</Title>
                     <p>{note.content}</p>
                     <small>

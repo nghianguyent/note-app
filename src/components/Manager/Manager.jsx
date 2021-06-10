@@ -1,7 +1,9 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
+// styled components
 const Editor = styled.div`
+    position: relative;
     background-color: #454545; 
     width: 70%;
     height: 90%;
@@ -21,19 +23,22 @@ const InputForm = styled.div`
 `;
 const Button = styled.button`
     position: absolute;
-    background-color: white;
+    background-color: transparent;
     border: none;
     font-family: "Open sans", sans-serif;
     font-weight: 700;
     color: #59B3F7;
     padding: 0.5rem 1rem;
     width: 100px;
-    height: 40px; 
+    height: 40px;
     cursor: pointer;
-    right: 0;
-    bottom: 0;
+    transition-duration: 0.2s;
+    bottom: 2rem;
+    right: 2rem;
+    &:hover {
+        transform: translate(-5px);
+    }
 `;
-
 const InputStyle = css`
     font-family: "Open sans", sans-serif;
     font-size: 1.3rem;
@@ -62,6 +67,8 @@ const InputMessage = styled.textarea`
     resize: none;
 
 `;
+
+// render components
 const Manager = (props) => {
     const onEditField = (key, value) => {
         props.updateNote({
@@ -86,6 +93,7 @@ const Manager = (props) => {
                     placeholder="Write your note here..."   />  
                 <small>{props.note.lastModified.toLocaleString()}</small>
             </InputForm>
+            <Button>Review Mode</Button>
         </Editor>
     );
 }

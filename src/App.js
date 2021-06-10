@@ -4,6 +4,8 @@ import './App.css';
 import styled, { createGlobalStyle } from 'styled-components';
 import Manager from './components/Manager/Manager.jsx';
 import Editor from './components/Editor/Editor.jsx';
+
+
 // styled components
 const GlobalStyles = createGlobalStyle`
 * {
@@ -20,6 +22,7 @@ const AppContainer = styled.div`
 	padding: 2rem;
 `;
 
+// render components
 function App() {
 	// const for creating new note
 	const newNote = {
@@ -30,9 +33,9 @@ function App() {
 	}
 
 	// initialize
-	const [listNote, setListNote] = useState([]);
+	const [listNote, setListNote] = useState(
+		localStorage.listNote ? JSON.parse(localStorage.listNote) : []);
 	const [activeNote, setActiveNote] = useState(false);
-	
 	// note item event
 	const updateNote = (updatedNote) => {
 		const updatedNoteArray = listNote.map((note) => {
@@ -41,7 +44,8 @@ function App() {
 			}
 			return note;
 		});
-		updatedNoteArray.sort((a, b) => b.lastModified.getTime() - a.lastModified.getTime() );
+		console.log(updatedNoteArray);
+		updatedNoteArray.sort((a, b) => b.lastModified - a.lastModified);
 		setListNote(updatedNoteArray);
 	};
 	const getActiveNote = () => {
@@ -57,9 +61,9 @@ function App() {
     };
 
 	// save to local storage
-	// useEffect(() => {
-	// 	localStorage.setItem("listNote", JSON.stringify(listNote));
-	// }, [listNote])
+	useEffect(() => {
+		localStorage.setItem("listNote", JSON.stringify(listNote));
+	}, [listNote])
 	// render
 	return (
 		<AppContainer>
@@ -68,6 +72,7 @@ function App() {
 				listNote={listNote}
 				createNote={createNote}
 				removeNote={removeNote}
+				activeNote={activeNote}
 				setActiveNote={setActiveNote}
 			/>
 			<Manager
