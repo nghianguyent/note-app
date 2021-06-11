@@ -33,18 +33,23 @@ function App() {
 	}
 
 	// initialize
+	const [viewMode, setViewMode] = useState(false)
 	const [listNote, setListNote] = useState(
 		localStorage.listNote ? JSON.parse(localStorage.listNote) : []);
 	const [activeNote, setActiveNote] = useState(false);
 	// note item event
-	const updateNote = (updatedNote) => {
-		const updatedNoteArray = listNote.map((note) => {
+	const updateNote = (key, value, currentNote) => {
+		const updatedNote = {
+			...currentNote,
+			[key]: value,
+			lastModified: new Date()
+		}
+		let updatedNoteArray = listNote.map((note) => {
 			if (note.id === activeNote) {
 				return updatedNote;
 			}
 			return note;
 		});
-		console.log(updatedNoteArray);
 		updatedNoteArray.sort((a, b) => b.lastModified - a.lastModified);
 		setListNote(updatedNoteArray);
 	};
@@ -76,6 +81,8 @@ function App() {
 				setActiveNote={setActiveNote}
 			/>
 			<Manager
+				viewMode={viewMode}
+				setViewMode={() => setViewMode(!viewMode)}
 				note={getActiveNote()}
 				updateNote={updateNote}
 			 />

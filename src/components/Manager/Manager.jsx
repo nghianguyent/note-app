@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-
+import ReactMarkdown from 'react-markdown';
 // styled components
 const Editor = styled.div`
     position: relative;
@@ -67,33 +67,51 @@ const InputMessage = styled.textarea`
     resize: none;
 
 `;
-
+const Reviews = styled.div`
+    
+`;
+const EditMode = (props) => {
+    return (
+        <InputForm>
+            <InputTitle 
+                type="text" 
+                value={props.note.title} 
+                onChange={(e) => props.onEditField('title', e.target.value,props.note)}
+                placeholder="Title" />
+            <InputMessage 
+                value={props.note.content} 
+                onChange={(e) => props.onEditField('content', e.target.value, props.note)}
+                placeholder="Write your note here..."   />  
+            <small>{props.note.lastModified.toLocaleString()}</small>
+        </InputForm>
+    );
+};
+const ReviewMode = (props) => {
+    return (
+        <Reviews>
+            <Title>{props.note.title}</Title>
+            <ReactMarkdown>{props.note.content}</ReactMarkdown>
+        </Reviews>      
+    );
+};
 // render components
 const Manager = (props) => {
-    const onEditField = (key, value) => {
-        props.updateNote({
-			...props.note,
-			[key]: value,
-			lastModified: new Date()
-		});
-    }
+    
     if (!props.note) return <div>Nothing to do</div>;
     return (
         <Editor className="manager" >
             <Title>Edit your note:</Title>
-            <InputForm>
-                <InputTitle 
-                    type="text" 
-                    value={props.note.title} 
-                    onChange={(e) => onEditField('title', e.target.value)}
-                    placeholder="Title" />
-                <InputMessage 
-                    value={props.note.content} 
-                    onChange={(e) => onEditField('content', e.target.value)}
-                    placeholder="Write your note here..."   />  
-                <small>{props.note.lastModified.toLocaleString()}</small>
-            </InputForm>
-            <Button>Review Mode</Button>
+            {!props.viewMode ? 
+            <EditMode 
+                note={props.note}
+                onEditField={props.updateNote}
+            /> 
+            : <ReviewMode 
+                note={props.note}
+            />}
+            <Button onClick={props.setViewMode}>
+                {!props.viewMode ? "Review" : "Edit"} Mode
+            </Button>
         </Editor>
     );
 }
