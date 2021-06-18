@@ -34,9 +34,22 @@ function App() {
 
 	// initialize
 	const [viewMode, setViewMode] = useState(false)
-	const [listNote, setListNote] = useState(
-		localStorage.listNote ? JSON.parse(localStorage.listNote) : []);
+	const [listNote, setListNote] = useState(() => {
+		if (localStorage.listNote) {
+			const reStoredNote = JSON.parse(localStorage.listNote);
+			return reStoredNote.map( (note) => {
+				note.lastModified = new Date(note.lastModified);
+				return note;
+			})
+		}
+		return [];
+	});
 	const [activeNote, setActiveNote] = useState(false);
+
+	// renew from local storage
+	const renewListNote = () => {
+		
+	}
 	// note item event
 	const updateNote = (key, value, currentNote) => {
 		const updatedNote = {
